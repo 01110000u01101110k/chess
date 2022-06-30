@@ -149,6 +149,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                                 room: self.room.clone(),
                             });
                         }
+                        "/give_up" => {
+                            self.addr.do_send(server::ChessGame {
+                                id: self.id,
+                                step: "give_up".to_string(),
+                                room: self.room.clone(),
+                            });
+                        }
                         "/list" => {
                             // Отправьте сообщение ListRooms на сервер чата и дождитесь ответа
                             println!("List rooms");
