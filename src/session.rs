@@ -128,19 +128,26 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                 if m.starts_with('/') {
                     let v: Vec<&str> = m.splitn(2, ' ').collect();
                     match v[0] {
-                        "/chess_step" => {
+                        "/chess-step" => {
                             if v.len() == 2 {
 
                                 println!("{}, {}", v[0], v[1]);
 
                                 self.addr.do_send(server::ChessGame {
                                     id: self.id,
-                                    step: v[1].to_owned(),
+                                    step: v[0].to_string() + v[1],
                                     room: self.room.clone(),
                                 });
                             } else {
                                 ctx.text("step is wrong");
                             }
+                        }
+                        "/restart_game" => {
+                            self.addr.do_send(server::ChessGame {
+                                id: self.id,
+                                step: "restart_game".to_string(),
+                                room: self.room.clone(),
+                            });
                         }
                         "/list" => {
                             // Отправьте сообщение ListRooms на сервер чата и дождитесь ответа

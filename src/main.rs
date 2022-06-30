@@ -65,6 +65,7 @@ async fn main() -> std::io::Result<()> {
             .route("/count", web::get().to(get_count))
             .route("/ws", web::get().to(chat_route))
             .service(Files::new("/", "../frontend/"))
+            .service(Files::new("/", "../frontend/icons"))
             .wrap(Logger::default())
     })
     .workers(2)
